@@ -1,0 +1,7 @@
+{% extends 'email/templates/default.twig' %}
+
+{% block content %}
+	<p>You have registered!</p>
+
+	<p>Activate your account using this link: {{ auth.baseURI }}{{ path_for('activate') }}?email={{ email }}&token={{ token | url_encode }}</p>
+{% endblock %}

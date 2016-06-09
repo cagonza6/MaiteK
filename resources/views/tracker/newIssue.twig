@@ -1,0 +1,91 @@
+{% extends 'tracker/template.twig' %}
+
+{% block content %}
+
+<h3 align="center">{{"New Issue" | transchoice(1) }}</h3>
+<p>{{"Plese provide a descriptive title and a detailed description" | trans }}</p>
+<div class="jumbotron" style="padding: 10px;">
+	<form action="{{ path_for('tracker.newIssue')}}" method="post" autocomplete="off">
+	<div class="form-group {{ errors.title ? 'has-error' : '' }}">
+		<label for="title">{{"Title" | trans }}</label>
+		<input type="text" name="title" id="title" class = "form-control" value="{{ old.title }}">
+		{% if errors.title %}
+			<span class= "help-block">{{ errors.title | first}}</span>
+		{% endif %}
+	</div>
+
+	<div class="form-group {{ errors.description ? 'has-error' : '' }}">
+		<label for="description">{{"Description" | trans }}</label>
+		<textarea class="form-control" rows="10" name="description" id="description">{{ old.description }}</textarea>
+		{% if errors.description %}
+			<span class= "help-block">{{ errors.description | first}}</span>
+		{% endif %}
+	</div>
+
+	<div class="form-group">
+
+		<table class="table">
+			<tbody>
+				<tr>
+					<td>
+						<label for="category">{{"Category" | transchoice(1)}}:</label>
+						<select class="input-small" name="category" id="category">
+						{% for key, category in trackConf.issueCategories %}
+							<option value="{{ key }}" > {{ category | transchoice(2)}} </option>
+						{% endfor %}
+						</select>
+
+					</td>
+					<td>
+						<label for="subcategory">{{"Sub Category" | transchoice(1)}}:</label>
+						<select class="input-small" name="subcategory" id="subcategory">
+						{% for key, subcat in trackConf.issueSubCategories %}
+							<option value="{{ key }}" > {{ subcat | transchoice(2)}} </option>
+						{% endfor %}
+						</select>
+
+					</td>
+					<td>
+						<i class="fa fa-code-fork" aria-hidden="true"></i> <label for="version">{{"In version" | trans}}:</label>
+						<select name="version" class="input-small" name="version" id="version">
+						{% for key, version in trackConf.versions %}
+							<option value="{{ key }}" > {{ version }} </option>
+						{% endfor %}
+						</select>
+					</td>
+					<td>
+						<i class="fa fa-file-text-o" aria-hidden="true"></i>
+						<label for="page">{{"Page" | transchoice(1) }}: </label>
+						<input type="number" id="page" name="page" class="input-small" min="1" max="999" value="1">
+
+					</td>
+					<td>
+						<label for="priority">{{"Priority" | transchoice(1)}}:</label>
+						<select class="input-small" name="priority" id="priority">
+						{% for key, priority in trackConf.issuePriorities %}
+							<option value="{{ key }}" > {{ priority | transchoice(1)}} </option>
+						{% endfor %}
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="4"><button align="right" type="submit" class="btn btn-default pull-right">{{ "Report" | trans}}</button></td>
+				</tr>
+			</tbody>
+		</table>
+
+
+
+
+
+
+
+
+		
+	</div>
+
+    {{ csrf.field | raw}}
+  </form>
+
+</div>
+{% endblock %}

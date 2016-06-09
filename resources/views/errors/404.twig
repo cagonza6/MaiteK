@@ -1,0 +1,15 @@
+{% extends 'templates/app.twig' %}
+
+{% block content %}
+      <div class="col-lg-8 col-lg-offset-2 text-center">
+        <div class="logo">
+          <h1>404</h1>
+        </div>
+        <p class="lead text-muted">Oops, we could not find what you were looking for!</p>
+        <div class="text-center">
+			<a href="{{ path_for('home')}}">
+				<img src="{{ path_for('home')}}/images/errors/404.jpg">
+			</a>
+        </div>
+      </div><!-- /.col-lg-8 col-offset-2 -->
+{% endblock %}

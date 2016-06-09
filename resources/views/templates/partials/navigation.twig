@@ -1,0 +1,45 @@
+<nav class="navbar navbar-inverse navbar-fixed-top">
+	<div class="container">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+				<span class="sr-only">Toggle navigation</span>
+			</button>
+
+			<a class="navbar-brand" href="{{ path_for('home') }}">
+				<i class="fa fa-home" aria-hidden="true"></i> {{ appConfig.appName }}
+			</a>
+		</div>
+		<div id="navbar" class="collapse navbar-collapse">
+			<ul class="nav navbar-nav">
+				<li><a href="{{ path_for('tracker.index') }}"><i class="fa fa-bug" aria-hidden="true"> </i> {{ appConfig.trackerName }}</a></li>
+				<li><a href="#"><i class="fa fa-file-image-o" aria-hidden="true"></i> Valesca</a></li>
+			</ul>
+			<ul class="nav navbar-nav navbar-right">
+			{% if auth.check %}
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-cog" aria-hidden="true"></i> {{ auth.user.fromArray.username }} <span class="caret"></span></a>
+						<ul class="dropdown-menu">
+							{% if not useExtDb %}
+							<li><a href="{{ path_for('auth.password.change') }}"><i class="fa fa-key" aria-hidden="true"></i> {{ "Change password" | trans}}</a></li>
+							<li><a href="{{ path_for('email.change') }}"><i class="fa fa-envelope-o" aria-hidden="true"></i> {{"Change email" | trans}}</a></li>
+							{% endif %}
+							<li><a href="{{ path_for('auth.signout') }}"><i class="fa fa-sign-out" aria-hidden="true"></i> {{"Log out" | trans}}</a></li>
+						</ul>
+					</li>
+					<li><a href="{{ path_for('user.profile',{username: auth.user.fromArray.username}) }}"><i class="fa fa-user" aria-hidden="true"></i> {{ "Profile" | trans}}</a></li>
+				{% else %}
+
+					{% if not useExtDb %}
+					<li><a href="{{ path_for('auth.signup') }}"><i class="fa fa-user-plus" aria-hidden="true"></i>
+						{{ "Register" | trans}}</a>
+					</li>
+					{% endif %}
+					<li><a href="{{ path_for('auth.signin') }}"><i class="fa fa-sign-in" aria-hidden="true"></i>
+						{{ "Log in" | trans}}</a>
+						</li>
+				{% endif %}
+			</ul>
+		</div>
+	</div>
+</nav>
+

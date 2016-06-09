@@ -1,0 +1,11 @@
+{% extends 'email/tracker/template.twig' %}
+
+{% block content %}
+<p>You have received this email because <b>{{ byUser }}</b> posted a comment in an issue
+that you are watching in <b>{{ appConfig.trackerName }}</b>.</p>
+
+<p><b>Issue Title</b>: {{ issue.title}}</p>
+<p><b>Comment:</b>
+{{ comment }}
+</p>
+{% endblock %}

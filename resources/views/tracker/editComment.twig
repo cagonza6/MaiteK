@@ -1,0 +1,27 @@
+{% extends 'tracker/template.twig' %}
+
+{% block content %}
+
+	<h2 align="center">{{"Edit Comment" | trans}}</h2>
+
+<div class="jumbotron" style="padding: 10px;">
+	<form action="{{ path_for('tracker.editComment',{'id':comment.id})}}" method="post" autocomplete="off">
+
+	<div class="form-group {{ errors.comment ? 'has-error' : '' }}">
+		<label for="comment">Comment</label>
+		<textarea class="form-control" rows="10" name="comment" id="comment">{{ old.comment?old.comment:comment.description }}</textarea>
+		{% if errors.comment %}
+			<span class= "help-block">{{ errors.comment | first}}</span>
+		{% endif %}
+	</div>
+
+	<div class="form-group" align="right">
+		<button type="submit" class="btn btn-default">Edit</button>
+	</div>
+
+	{{ csrf.field | raw}}
+	</form>
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,107 @@
+{% extends 'tracker/template.twig' %}
+
+
+{% block content %}
+
+	{% if createIssue %}
+	<h4 align="right"><a href="{{ path_for('tracker.newIssue') }}" >{{"New Issue" | transchoice(1) }} </a><i class="fa fa-bug"></i></h4>
+	{% endif %}
+	<div class="row">
+		<div class="panel panel-primary">
+			<div class="panel-heading">
+				<div class="text-right pull-left inline">
+					<h3 class="panel-title">
+					{% if not mine %}
+					{{trackConf.issueStatuses[status] | transchoice(2)}}
+					{% else %}
+					My [{{trackConf.issueStatuses[status] | transchoice(2)}}]
+					{% endif %}
+					{{trackConf.issueCategories[category] | transchoice(2) }}
+					</h3>
+				</div>
+				<div class="inline text-right">{{"Priority" | transchoice(2)}}: 
+					<span class="label label-warning">{{ trackConf.issuePriorities[1] | trans}}</span>
+					<span class="label label-midWarning">{{ trackConf.issuePriorities[2] | trans}}</span>
+					<span class="label label-danger">{{ trackConf.issuePriorities[3] | trans}}</span>
+				</div>
+			</div>
+			<table class="table table-hover" id="issues-table">
+				<thead>
+					<tr>
+						<th style="max-width:45px;">{{"Id" | trans}}</th>
+						<th>{{"Title" | trans }}</th>
+						<th style="width:95px;">{{"Created by" | trans }}</th>
+						<th style="width:100px;">{{"Date" | trans }}</th>
+						<th style="width:170px;">{{"Last comment" | transchoice(1) }}</th>
+					{% if auth.check %}
+						<th style="width:75px;">{{"Actions" | trans }}</th>
+					{% endif %}
+					</tr>
+				</thead>
+				<tbody>
+					{% for issue in issues %}
+					<tr class=
+					{% if issue.fromArray.priority=="1" %}
+					"warning"
+					{% elseif issue.fromArray.priority=="2" %}
+					"danger"
+					{% elseif issue.fromArray.priority=="3" %}
+					"midWarning"
+					{% endif %}
+					>
+						<td><a href="{{path_for('tracker.viewIssue', {'id':issue.fromArray.id})}}">{{ issue.fromArray.id}}</a>
+					{% if auth.check %}
+						<a href="{{path_for('tracker.viewIssue', {'id':issue.fromArray.id})}}">
+							{% if issue.fromArray.watching %}
+								<i class="fa fa-eye" aria-hidden="true"></i></a>
+							{% endif %}
+						</td>
+					{% endif %}
+						<td><a href="{{path_for('tracker.viewIssue', {'id':issue.fromArray.id})}}">
+							{{ issue.fromArray.title}}</a></td>
+						<td>
+							<a href="{{ path_for('user.profile',{username: issue.fromArray.issueUsername}) }}">
+							{{ issue.fromArray.issueUsername}}</a>
+						</td>
+						<td><a href="{{path_for('tracker.viewIssue', {'id':issue.fromArray.id})}}">
+							{{ issue.fromArray.issueDate | date(appConfig.timeFormat)}}</a></td>
+						<td>
+						{% if issue.fromArray.lastCommentDate %}
+							<a href="{{path_for('tracker.viewIssue', {'id':issue.fromArray.id})}}">
+								{{ issue.fromArray.lastCommentDate | date(appConfig.timeFormat)}} by {{ issue.fromarray.commentUsername}}
+							</a>
+						{% endif %}
+						</td>
+					{% if auth.check %}
+						<td>
+						{% if  issue.fromArray.editIssue %}
+							<div class="btn-group inline">
+								<form action="{{ path_for('tracker.editIssue',{'id':issue.fromArray.id})}}" method="post" class="form-inline">
+									<button type="submit" name="editIssue" class="btn btn-warning btn-xs">
+										<i class="fa fa-pencil-square-o"></i>
+									</button>
+								{{ csrf.field | raw}}
+								</form>
+							</div >
+						{% endif %}
+						{% if issue.fromArray.deleteIssue %}
+							<div class="btn-group inline">
+								<form action="{{ path_for('tracker.deleteIssue') }}" method="post" class="form-inline">
+									<input type="hidden" name="issueId" value="{{ issue.fromArray.id }}" />
+									<button type="submit" name="deleteIssue" class="btn btn-danger btn-xs">
+										<i class="fa fa-trash"></i>
+									</button>
+								{{ csrf.field | raw}}
+								</form>
+							</div >
+						{% endif %}
+						</td>
+					{% endif %}
+					</tr>
+				{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+{% endblock %}

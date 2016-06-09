@@ -1,0 +1,16 @@
+{% extends 'email/tracker/template.twig' %}
+
+{% block content %}
+
+<p>You have received this email because an issue you are following in <b>{{ appConfig.trackerName }}</b> has been updated by <b>{{user.username}}</b></p>
+
+<p><b>Issue Title</b>: {{ issue.title}}</p>
+<p>
+	<b>Status: </b>{{ trackConf.issueStatuses[issue.status|number_format] }} -> {{ trackConf.issueStatuses[modifications.status] }}
+</p>
+
+<p>
+<b>Priority: </b>{{trackConf.issuePriorities[issue.priority|number_format] }} -> {{ trackConf.issuePriorities[modifications.priority] }}
+</p>
+
+{% endblock %}

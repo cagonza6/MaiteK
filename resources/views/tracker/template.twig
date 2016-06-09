@@ -1,0 +1,34 @@
+{% extends 'templates/app.twig' %}
+
+{% block subMenu %}
+	<div align="container">
+		<ul class="breadcrumb">
+	{% for keyCat, category in trackConf.issueCategories %}
+			<li class="dropdown">
+				<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> {{ category | transchoice(2) }} <span class="caret"></span></a>
+				<ul class="dropdown-menu">
+					{% for keyStat, issueStatus in trackConf.issueStatuses %}
+						<li><a href="{{ path_for('tracker.index') }}?category={{ keyCat }}&status={{keyStat}}">
+							{{ issueStatus | transchoice(2)}}
+							</a>
+						</li>
+					{% endfor %}
+					{% if auth.check %}
+						<li><a href="{{ path_for('tracker.myIssues') }}?category={{ keyCat }}">{{"My" | transchoice(2) }} {{ category | transchoice(2)}}</a>
+							</li>
+					{% endif %}
+				</ul>
+			</li>
+	{% endfor %}
+		</ul>
+	</div>
+
+{% endblock %}
+
+{% block header %}
+	<header>
+		<div align="center">
+			<img src="{{ path_for('home')}}/images/tracker/logo.png" class="logo">
+		</div>
+	</header>
+{% endblock %}

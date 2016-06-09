@@ -1,0 +1,37 @@
+{% extends 'templates/app.twig' %}
+
+{% block content %}
+
+<div class="page-header">
+	<h1>{{ appConfig.appName}}</h1>
+	<h2>{{ appConfig.appSubName}}</h2>
+</div>
+
+<p>
+MaiteK is an application oriented for teams that are not really into computing (at least not all the members) or just few users have access to the "source of the project" but a bigger community is informing errors related to the project. Up to now, it is composed by two aplications:
+</p>
+
+<table  class="table">
+	<tr>
+		<td width="45%" align="center">
+			<a href="{{ path_for('tracker.index') }}">
+				<img src="{{ path_for('home')}}/images/tracker/logo.png" class="logo">
+			</a>
+		</td>
+		<td width="10%"></td>
+		<td width="45%" align="center">
+
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<b>Bug Jar</b> is a basic Issue tracker easy to modify. It is extremely user friendly and in some how comparable to a little forum since reported issues can be clasified and discused in their own topics.
+		</td>
+		<td width="10%"></td>
+		<td>
+			<b>VALESCA</b> (VALuable Extension to Share Content and Administrate it ) is a simple file sharing system where users can comment and discuse about every files.
+		</td>
+	</tr>
+</table>
+
+{% endblock %}

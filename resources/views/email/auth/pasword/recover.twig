@@ -1,0 +1,6 @@
+{% extends 'email/templates/default.twig' %}
+
+{% block content %}
+	<p>You requested a password change.</p>
+	<p>Click this link to reset your password: {{ auth.baseURI }}{{ path_for('password.reset') }}?email={{ email }}&token={{ token | url_encode }}</p>
+{% endblock %}

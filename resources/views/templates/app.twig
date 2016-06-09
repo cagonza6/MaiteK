@@ -1,0 +1,45 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<title>{{ appConfig.appName }}: {{ appConfig.appSubName }} </title>
+	<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+	<link rel="stylesheet" href="{{  base_url() }}/css/app.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.2/css/font-awesome.min.css">
+</head>
+<body>
+	<main>
+		<div id="content">
+			{% include 'templates/partials/navigation.twig' %}
+			<div class="container">
+				{% block  subMenu %}{% endblock %}
+				{% block header %}{% endblock %}
+				{% include 'templates/partials/flash.twig' %}
+				{% block  content %}{% endblock %}
+			</div>
+		</div>
+	</main>
+
+	{% block footer %}
+	<footer>
+		<div class="navbar-inverse navbar-bottom">
+			<div class="container">
+				<p class="text-muted text-center credit">{{"powered by" |trans }} <a href="https://github.com/cagonza6/MaiteK">MaiteK</a> {{"by" | trans}}
+				<a href="https://github.com/cagonza6">Cristian Gonzalez Mora <i class="fa fa-github" aria-hidden="true"></i>
+				</a>.
+				</p>
+			</div>
+		</div>
+	</footer>
+	{% endblock %}
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+	<!-- Latest compiled and minified JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+
+</body>
+
+</html>
+
+

@@ -1,0 +1,6 @@
+{% extends 'email/templates/default.twig' %}
+
+{% block content %}
+	<p>You requested a email change.</p>
+	<p>Click this link to confirm the new email: {{ auth.baseURI }}{{ path_for('email.change.confirm') }}?email={{ email }}&token={{ token | url_encode }}</p>
+{% endblock %}

@@ -1,0 +1,266 @@
+{% extends 'tracker/template.twig' %}
+
+{% block content %}
+
+<h2 align="left">Issue# {{issue.id}}: {{issue.title}} </h2>
+<div class="panel panel-info">
+	<div class="panel-heading">
+		<div class="row">
+			<div class="col-sm-10" width="100%">
+						<h3 class="panel-title pull-left">
+							<b>{{issue.username}}</b> {{"opened this issue at" | trans }} <b>{{ issue.date | date(appConfig.timeFormat)}} </b>
+						</h3>
+			</div>
+			<div class="col-lg-2 text-right pull-right">
+				{% if issue.permissions.editIssue %}
+					<div class="btn-group inline" class="pull-right">
+						<form action="{{ path_for('tracker.editIssue',{'id':issue.id})}}" method="post" class="form-inline">
+							<button type="submit" name="editIssue" class="btn btn-warning btn-xs">
+								<i class="fa fa-pencil-square-o"></i>
+							</button>
+						{{ csrf.field | raw}}
+						</form>
+					</div >
+				{% endif %}
+				{% if  issue.permissions.deleteIssue %}
+					<div class="btn-group inline">
+						<form action="{{ path_for('tracker.deleteIssue') }}" method="post" class="form-inline">
+							<input type="hidden" name="issueId" value="{{ issue.id }}" />
+							<button type="submit" name="deleteIssue" class="btn btn-danger btn-xs">
+								<i class="fa fa-trash"></i>
+							</button>
+						{{ csrf.field | raw}}
+						</form>
+					</div >
+				{% endif %}
+			</div>
+		</div>
+	</div>
+
+	<table class="table table-hover" id="dev-table" >
+		<tbody>
+			<tr>
+				<td colspan="{{ (trackConf.issueSubCategories |length > 0)?9:7  }}">{{ markDownParser.parse(issue.description) | raw}}</td>
+			</tr>
+			{% if issue.updated_by %}
+			<tr>
+				<td colspan="{{ (trackConf.issueSubCategories |length > 0)?9:7  }}" align="right">
+					{{"Updated by" | trans }} <b>{{ issue.updater}}</b> {{"at" | trans }} <b> {{ issue.updated_at | date(appConfig.timeFormat)}}</b>
+				</td>
+			</tr>
+			{% endif %}
+
+			<form action="{{ path_for('tracker.viewIssue', {'id':issue.id}) }}" method="post" autocomplete="off">
+			<tr>
+
+				<td colspan=1 >
+					<i class="fa fa-object-group" aria-hidden="true"></i> {{"Category" | transchoice(1)}}:
+				</td>
+
+				<td>
+				{% if issue.permissions.changeCategory %}
+					<select class="input-small" name="category" id="category">
+					{% for key, category in trackConf.issueCategories %}
+						<option value="{{ key }}" {%if issue.category |number_format == key %} selected {% endif %}>
+							{{ category | transchoice(2) }}
+						</option>
+					{% endfor %}
+					</select>
+				{% else %}
+					<b>{{ trackConf.issueCategories[issue.category] }}</b>
+				{% endif %}
+				</td>
+			{% if trackConf.issueSubCategories |length > 0  %}
+				<td colspan=1 >
+					<i class="fa fa-object-ungroup" aria-hidden="true"></i> {{"Sub Category" | transchoice(1)}}:
+				</td>
+				<td>
+				{% if issue.permissions.changeSubCategory %}
+					<select class="input-small" name="subCategory" id="subCategory">
+					{% for key, subcategory in trackConf.issueSubCategories %}
+						<option value="{{ key }}" {%if issue.subCategory |number_format == key %} selected {% endif %}>
+							{{ subcategory | transchoice(2) }}
+						</option>
+					{% endfor %}
+					</select>
+				{% else %}
+					<b>{{ trackConf.issueSubCategories[issue.subCategory] }}</b>
+				{% endif %}
+				</td>
+			{% endif %}
+				<td>
+					<i class="fa fa-code-fork" aria-hidden="true"></i> {{"In version" | trans}}:
+				</td>
+				<td>
+					{% if issue.permissions.changeVersion %}
+					<select name="version" class="input-small" name="version" id="version">
+					{% for key, version in trackConf.versions %}
+						<option value="{{ key }}" {% if issue.version |number_format == key %} selected {% endif %}>
+							{{ version }}
+						</option>
+					{% endfor %}
+					</select>
+					{% else %}
+					<b>{{ trackConf.versions[issue.version ] }}</b>
+					{% endif %}
+				</td>
+				<td>
+					<i class="fa fa-file-text-o" aria-hidden="true"></i>
+				</td>
+				<td align = "right">
+					{{"Page" | transchoice(1) }}:
+				</td>
+				<td>
+					{% if issue.permissions.changePage %}
+					<input type="number" id="page" name="page" class="input-small" min="1" max="999" value="{{ issue.page }}">
+					{% else %}
+					<b>{{ issue.page }}</b>
+					{% endif %}
+				</td>
+			</tr>
+			<tr>
+				<td>
+					{{"Priority" | transchoice(1)}}:
+				</td>
+				<td>
+					{% if issue.permissions.changePriority %}
+						<select class="input-small" name="priority" id="priority">
+						{% for key, priority in trackConf.issuePriorities %}
+							<option value="{{ key }}" {%if issue.priority |number_format == key %} selected {% endif %}>
+								{{ priority | transchoice(2)}}
+							</option>
+						{% endfor %}
+						</select>
+					{% else %}
+							<b>{{ trackConf.issuePriorities[issue.priority] }}</b>
+					{% endif %}
+				</td>
+				<td>
+					{{"Status" | trans }}:
+				</td>
+				<td>
+					{% if issue.permissions.changeStatus %}
+					<select class="input-small" name="status" id="status">
+						{% for key, status in trackConf.issueStatuses %}
+							<option value="{{ key }}" {%if issue.status |number_format == key %} selected {% endif %}>
+								{{ status | transchoice(1)}}
+							</option>
+						{% endfor %}
+					</select>
+					{% else %}
+							<b>{{ trackConf.issueStatuses[issue.status] }}</b>
+					{% endif %}
+				</td>
+				<td colspan="1">
+				{% if auth.check %}
+					{% if issue.watching %}
+					<i class="fa fa-eye" aria-hidden="true"></i>
+					{% else %}
+					<i class="fa fa-eye-slash" aria-hidden="true"></i>
+					{% endif %}
+
+				</td>
+				<td>
+					{% if issue.watching %}
+					<select class="input-small" name="watching" id="watching">
+						<option value="0" >{{"Stop watching" | trans }}</option>
+						<option value="1" selected >{{"Watching" | trans }}</option>
+					</select>
+
+					{% else %}
+					
+					<select class="input-small" name="watching" id="watching">
+						<option value="0" selected >{{"Not Watching" | trans }}</option>
+						<option value="1" >{{"Watch" | trans }}</option>
+					</select>
+					{%endif%}
+				{%endif%}
+					</td>
+					<td  id= "updatetd" colspan="{{ ((trackConf.issueSubCategories |length > 0)?3:1) + (auth.check?0:1)}}" align="right" width="20%">
+					{% if auth.check and issue.permissions.editIssue %}
+							<button type="submit" name="action" id= "update" value="update" class="btn btn-default">
+								{{"Update" | trans }}
+							</button>
+						{{ csrf.field | raw}}
+					{%endif%}
+				</td>
+			</tr>
+			</form>
+		</tbody>
+	</table>
+</div>
+
+{% for comment in comments %}
+
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<div class="row">
+			<div class="col-sm-10" width="100%">
+					<h3 class="panel-title pull-left">
+						<b>{{comment.username}}</b> {{"made a comment at" | trans }} <b>{{ comment.date | date(appConfig.timeFormat)}} </b>
+					</h3>
+			</div>
+			<div class="col-lg-2 text-right pull-right">
+
+				{% if comment.editComment %}
+					<a href="{{ path_for('tracker.editComment',{'id':comment.id}) }}" class="btn btn-warning btn-xs">
+						<i class="fa fa-pencil-square-o"></i>
+					</a>
+					{% endif %}
+					{% if comment.deleteComment %}
+					<div class="btn-group inline">
+						<form action="{{ path_for('tracker.deleteComment', {'id':comment.id} ) }}" method="post" class="form-inline">
+							<button type="submit" name="commentAction" value="delete" class="btn btn-danger btn-xs ">
+								<i class="fa fa-trash"></i>
+							</button>
+						{{ csrf.field | raw}}
+						</form>
+					</div >
+					{% endif %}
+
+			</div>
+		</div>
+	</div>
+
+		<table class="table table-hover" id="dev-table">
+			<tbody>
+				<tr>
+					<td colspan="2">{{ markDownParser.parse(comment.description) | raw }}</td>
+				</tr>
+			{% if comment.updated_by %}
+				<tr>
+					<td colspan="2" align="right">
+						{{"Updated by" | trans }} <b>{{ comment.updater}}</b> {{"at"|trans }} <b> {{ comment.updated_at | date(appConfig.timeFormat)}}</b>
+					</td>
+				</tr>
+			{% endif %}
+			</tbody>
+		</table>
+</div>
+{% endfor %}
+
+{% if auth.check %}
+<div class="jumbotron" style="padding: 10px;">
+	<form action="{{ path_for('tracker.viewIssue', {'id':issue.id}) }}" method="post" autocomplete="off">
+
+	<div class="form-group {{ errors.comment ? 'has-error' : '' }}">
+		<label for="comment">{{"Make a comment" | trans }}</label>
+		{% if errors.comment %}
+			<span class= "help-block">{{ errors.comment | first}}</span>
+		{% endif %}
+
+		<textarea class="form-control" rows="10" name="comment" id="comment"></textarea>
+	</div>
+
+	<div align ="right" class="form-group">
+		<button type="submit" class="btn btn-default" name="action" id= "newComment" value="newComment">
+			{{"Add Comment" | trans }}
+		</button>
+	</div>
+	{{ csrf.field | raw}}
+	</form>
+{% endif %}
+
+
+
+{% endblock %}

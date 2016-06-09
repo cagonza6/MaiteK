@@ -1,0 +1,36 @@
+{% if flash.getMessage('success') %}
+	{% for mes in flash.getMessage('success') %}
+	<div class="alert alert-success">
+		{{ mes |trans }}
+	</div>
+	{% endfor %}
+
+{% endif %}
+
+{% if flash.getMessage('info') %}
+
+	{% for mes in flash.getMessage('info') %}
+	<div class="alert alert-info">
+		{{ mes |trans }}
+	</div>
+	{% endfor %}
+{% endif %}
+
+
+{% if flash.getMessage('warning') %}
+	{% for mes in flash.getMessage('warning') %}
+	<div class="alert alert-warning">
+		{{ mes |trans }}
+	</div>
+	{% endfor %}
+
+{% endif %}
+
+{% if flash.getMessage('error') %}
+	{% for mes in flash.getMessage('error') %}
+	<div class="alert alert-danger">
+		{{ mes |trans }}
+	</div>
+	{% endfor %}
+
+{% endif %}
