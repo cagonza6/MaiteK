@@ -1,4 +1,5 @@
 # Maitek: My Application Intended To Exchange Knowledge
+## (see "dev" branch)
 
 MaiteK is the Core of a lightweight application that consists of several modules (or intended to have more than one).
 
