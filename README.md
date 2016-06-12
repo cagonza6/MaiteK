@@ -28,9 +28,13 @@ Try it here http://cagonza6.ddns.net/maite try it with this
  * Valesca: simple upload/download gallery
 
 ## Installation
-In order to install all the dependencies
+In order to install all the dependencies  
+
     composer install 
-You also need to generate the autoloads of the application
+
+You also need to generate the autoloads of the application  
+
     composer dump-autoload -o
 
-Also you need to install the sql schema.
+Also you need to install the sql schema.  
+Your web server has to point to the folder "maite/public". Therefore, you need to create a symbolic link or an alias that brings the user to that folder.
