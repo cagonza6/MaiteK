@@ -53,7 +53,8 @@ CREATE TABLE `sessions` (
 DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
   `user_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `username` varchar(128) NOT NULL,
+  `username` varchar(128) DEFAULT NULL,
+  `username_clean` varchar(128) NOT NULL,
   `real_name` varchar(128) DEFAULT NULL,
   `password` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
@@ -64,7 +65,7 @@ CREATE TABLE `users` (
   `team` int(2) NOT NULL DEFAULT '0',
   `activated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`user_id`,`username`,`email`)
+  PRIMARY KEY (`user_id`,`email`,`username_clean`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 

@@ -50,7 +50,6 @@ $container['database'] = function ($container) use ($Database){
 	return $Database;
 };
 
-
 $session = new \RKA\Session();
 $container['session'] = function ($container) use($session){
 	return $session;
@@ -120,7 +119,6 @@ $container['flash'] = function ($container){
 	return new \Slim\Flash\Messages;
 };
 
-
 $container['auth'] = function ($container){
 	return new \App\Auth\Auth($container->session);
 };
@@ -131,6 +129,10 @@ $container['validator'] = function ($container){
 
 $container['HomeController'] = function ($container){
 	return new \App\Controllers\HomeController($container);
+};
+
+$container['UserController'] = function ($container){
+	return new \App\Controllers\UserController($container);
 };
 
 $container['AuthController'] = function ($container){

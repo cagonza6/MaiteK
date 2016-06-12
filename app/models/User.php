@@ -6,45 +6,53 @@ use App\Database\Database;
 
 class User extends Database{
 	/*
-	 * Load the user's data required after login to load it. It validates
-	 * the password parameters.
-	 * Input: $user_name, $user_pass
-	 * Return: array|false
+	 * Loads the user information with the given data
+	 * @id       : user's Id
+	 * @email    : user's email
+	 * @username : user's username, the clean version of it
+	 * Return: array with the users data
 	 * */
+	public static function userData($id, $email, $username){
+		$queryData = [];
+		$query = 'SELECT username, username_clean, real_name, password, user_id AS id, email, status, gender, level, team, activated_at, lang FROM users WHERE ';
+		if ($id){
+			$query .='user_id=:id ';
+			$queryData[':id'] = $id;
+		}
+		elseif($email){
+			$query .='email=:email ';
+			$queryData[':email'] = $email;
+		}
+		elseif($username){
+			$query .='username_clean=:username ';
+			$queryData[':username'] = $username;
+		}
 
-	/*
-	 * Loads the non sensitive information of the user with the given id
-	 * Input: $id
-	 * Return: array
-	 * */
-	public static function userData($id){
-		$query = 'SELECT username, user_id AS id, password, email, gender, level, team, status, lang  FROM users WHERE user_id=:id Limit 1;';
-		$queryData = array(':id' => $id,);
+		$query .= 'Limit 1';
 		return self::fetchOne($query, $queryData);
 	}
 
-	public static function searchbyEmail( $email){
-		$query = 'SELECT user_id AS id, username AS username, email, lang FROM users WHERE email=:email LIMIT 1;';
-		$queryData = array(':email' => $email,);
-
-		return self::fetchOne($query, $queryData);
+	public static function searchbyEmail($email){
+		return self::userData(false, $email, false);
 	}
 
 	public static function loadUser($user_name){
-
-		$query = 'SELECT username, real_name, password, user_id, email, status, gender, level, team, activated_at, lang FROM users WHERE username=:user_name Limit 1;';
-
-		$queryData = array(
-			':user_name' => $user_name,
-		);
-		$user = self::fetchOne($query, $queryData);
-		return $user;
+		return self::userData(false, false, $user_name);
 	}
 
 	public static function setPassword($userId, $password){
 		$query = 'UPDATE users SET password=:password WHERE user_id=:id ;';
 		$queryData = array(
 			':password' => $password,
+			':id' => $userId,
+		);
+		self::executeQuery($query, $queryData);
+	}
+
+	public static function setLang($userId, $lang){
+		$query = 'UPDATE users SET lang=:lang WHERE user_id=:id ;';
+		$queryData = array(
+			':lang' => $lang,
 			':id' => $userId,
 		);
 		self::executeQuery($query, $queryData);

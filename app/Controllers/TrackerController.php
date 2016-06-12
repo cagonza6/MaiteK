@@ -11,6 +11,8 @@ use \Respect\Validation\Validator as v;
 class TrackerController extends Controller{
 
 	public function index($request, $response, $args){
+		$status=0;
+		$category=1;
 		if(count($args)){
 			$userId = isset($args['userid'])?(int)$args['userid']:(int)$this->auth->user()->id;
 			$category = (int)isset($args['category'])?$args['category']:1;
@@ -27,8 +29,6 @@ class TrackerController extends Controller{
 		if (!array_key_exists($status,$this->configs['issueStatuses'])) $status=0;
 		if (!array_key_exists($category, $this->configs['issueCategories'])) $category=1;
 
-		if (!array_key_exists($status, $this->configs['issueStatuses']))
-			$status = 0;
 
 		$issues = Issue::getAllIssues($status, $userId, $mine, $category);
 

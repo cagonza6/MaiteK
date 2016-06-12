@@ -11,7 +11,7 @@ class Auth {
 	}
 
 	public function user(){
-		return User::userData($this->session->user);
+		return User::userData($this->session->user, false, false);
 	}
 
 	public function check(){
@@ -30,7 +30,7 @@ class Auth {
 		}
 
 		if(password_verify($password, $user->password)){
-			$this->session->user = (int)$user->user_id;
+			$this->session->user = (int)$user->id;
 			return true;
 		}
 

@@ -1,18 +1,7 @@
 <?php
-use \App\Models\User;
+use App\Middleware\AuthMiddleware;
+use App\Middleware\GuestMiddleware;
 
-// actions after the email is received
-$app->get('/user/{username}', function($request, $response, $args){
-
-	$username = $args['username'];
-	$user = User::loadUser($username);
-	if(!$user->username){
-		$this->view->render($response, 'errors/404.twig');
-		return $response->withStatus(404); 
-	}
-	$this->view->render($response, 'user/profile.twig',['user'=>$user,
-		'avatar'=>User::gravatarAvatar($user->email),
-		'appConf'=>$this->config->get('app')
-	]);
-
-})->setName('user.profile');
+$app->get('/user/{username}', 'UserController:profile')->setName('user.profile');
+$app->get('/lang', 'UserController:getSetLang');
+$app->post('/lang', 'UserController:setLang')->setName('setLang');

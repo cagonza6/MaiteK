@@ -7,22 +7,22 @@ return [
 			'baseURI'       => 'http://localhost', // The internet address where the aplicacion is hosted. ex: http://www.example.com
 			'defLanguage'   => 'en_US',        // Default language if something fails
 			'languages'     => [
-								'en_US'=>'English',
-								'es_CL'=>'Español'
+								'en_US'=>'en',
+								'es_CL'=>'es'
 								],      // languages availables for the app
 			'appName'       => 'MAITEK',       // Name of the homepage
 			'appSubName'    => 'My Application Intended To Exchange Knowledge', // secondary name
 			'appEmailUser'  => 'My page',      // Name of who sends the emails from the app.
 			'appEmail'      => 'm@i.te',       // Email account from where the emails wil be send
-			'timeZone'      => 'Europe/Berlin',// timezone of the server
-			'timeFormat'    => 'd-M-Y',        // time format for dates
+			'timeZone'      => 'Europe/Berlin',// timezone for the server
+			'timeFormat'    => 'd-M-Y',        // time format to dates
 			'trackerName'   => 'Bug Jar',
 	],
 
 	'userEmailConfirm'=> true,          // do users need to confirm their account by email?
-	'useExtDb'      => false,           // this allows the to use an external DB for the login, see db_external.php
+	'useExtDb'      => false,           // this allows the to use an external DB for the login. see db_external.php
 	'ExtDbconfirm'  => false,           // should the accounts from the external DB be confirmed by email after transfered?
-	'debugMode'     => true,            // activates the php option to show of errors, deactivate for production!!!.
+	'debugMode'     => true,            // activates the sending show of errors, deactivate for production
 
 	'teams'=>[
 		'defaultTeam' => 0,

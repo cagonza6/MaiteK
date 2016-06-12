@@ -26,20 +26,44 @@
 							<li><a href="{{ path_for('auth.signout') }}"><i class="fa fa-sign-out" aria-hidden="true"></i> {{"Log out" | trans}}</a></li>
 						</ul>
 					</li>
-					<li><a href="{{ path_for('user.profile',{username: auth.user.fromArray.username}) }}"><i class="fa fa-user" aria-hidden="true"></i> {{ "Profile" | trans}}</a></li>
-				{% else %}
-
+					<li><a href="{{ path_for('user.profile',{username: auth.user.fromArray.username}) }}"><i class="fa fa-user" aria-hidden="true"></i> {{ "Profile" | trans}}</a>
+					</li>
+			{% else %}
 					{% if not useExtDb %}
 					<li><a href="{{ path_for('auth.signup') }}"><i class="fa fa-user-plus" aria-hidden="true"></i>
 						{{ "Register" | trans}}</a>
 					</li>
 					{% endif %}
-					<li><a href="{{ path_for('auth.signin') }}"><i class="fa fa-sign-in" aria-hidden="true"></i>
+					<li>
+						<a href="{{ path_for('auth.signin') }}"><i class="fa fa-sign-in" aria-hidden="true"></i>
 						{{ "Log in" | trans}}</a>
-						</li>
-				{% endif %}
+					</li>
+			{% endif %}
+			{% if appConfig.languages | length >1 %}
+					<li>
+						<div class="btn-group navbar-btn dropdown">
+							<button type="button" class="btn-xs btn-default dropdown-toggle" data-toggle="dropdown">
+								<span class="lang-xs" lang="default"></span> <span class="caret"></span>
+							</button>
+							<ul class="dropdown-menu" role="menu">
+						{% for key, lang in appConfig.languages %}
+								<li>
+									<form action="{{ path_for('setLang')}}" method="post">
+										<input type="hidden" name="lang" value="{{key}}">
+										<button type="submit" class="btn btn-default btn-xs">
+											<span class="lang-xs lang-lbl" lang="{{lang}}"></span>
+										</button>
+										{{ csrf.field | raw}}
+									</form>
+								</li>
+						{% endfor %}
+							</ul>
+						</div>
+					</li>
+			{% endif %}
 			</ul>
 		</div>
 	</div>
+
 </nav>
 

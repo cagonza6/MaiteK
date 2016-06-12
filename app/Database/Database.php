@@ -81,9 +81,9 @@ class Database {
 	public static function userExists($username){
 		if (trim($username)=='')
 			return false;
-		$query = 'SELECT username FROM users WHERE username=:username LIMIT 1;';
+		$query = 'SELECT username_clean FROM users WHERE username_clean=:username LIMIT 1;';
 		$queryData = array(
-			':username' => $username,
+			':username' => strtolower($username),
 		);
 		$user = self::fetchOne($query, $queryData);
 
@@ -106,10 +106,11 @@ class Database {
 		$status = $status?1:0;
 		$level= (int) $level;
 
-		$query = 'INSERT INTO users (username, password, email, level, status, team ) ';
-		$query .= 'values( :username, :password, :email, :level, :status, :team ); ';
+		$query = 'INSERT INTO users (username, username_clean, password, email, level, status, team ) ';
+		$query .= 'values( :username, :username_clean, :password, :email, :level, :status, :team ); ';
 		$queryData = array(
 			':username' => $username,
+			':username_clean' => strtolower($username),
 			':password' => $password,
 			':email' => $email,
 			':level' => $level,

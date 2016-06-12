@@ -41,7 +41,7 @@ class Issue extends Database{
 
 		if ($mine)
 			$query .=' WHERE issues.user=:current_user ';
-		elseif($status){
+		else{
 			$query .=' WHERE issues.status=:status ';
 			$queryData[':status'] = $status;
 			}
