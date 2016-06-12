@@ -15,7 +15,10 @@ Try it here http://cagonza6.ddns.net/maite try it with this
 ## Features
 * Standalone option
 * External DB option: configure the application to use user and password from an external DB
-* Multilang : up to now is no completely implemented... sorry about that.
+* **clean username**: the username is not case sensitive, this is very important if you use it with an external DB. Therefore : 
+    * "user" and "UsEr" are the same person, but  
+    * "user1" and "user2" are the username of different accounts.   
+* Multilingual: users and guest can define the language they want to use.
 
 ### Missing features?
  
