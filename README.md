@@ -6,7 +6,7 @@ MaiteK is the Core of a lightweight application that consists of several modules
 ## Demo
 There is a working demo located in a test server (Raspherry Pi), the server might be sometimes outline due to running weird experients in alpha version. Is not yet a beta and it is a little far away from a release candidate.
 
-Try it here http://cagonza6.ddns.net try it with this 
+Try it here http://cagonza6.ddns.net/maite try it with this 
 * Accounts data : **username**/**password**
   * admin/admin
   * user/user
